@@ -2,7 +2,7 @@ package interface_form;
 
 import java.util.Arrays;
 
-public class ArrayList<E> implements List<E>{
+public class ArrayList<E> implements List<E>, Cloneable{
 
     private static final int DEFAULT_CAPACITY = 10;  //최소(기본) 용적 크기
     private static final Object[] EMPTY_ARRAY = {};  //빈 배열
@@ -203,5 +203,19 @@ public class ArrayList<E> implements List<E>{
         }
         size=0;
         resize();
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        //새로운 객체 생성
+        ArrayList<?> cloneList = (ArrayList<?>)super.clone();
+
+        //새로운 객체 배열 생성
+        cloneList.array = new Object[size];
+
+        //배열의 값을 복사
+        System.arraycopy(array, 0, cloneList.array, 0, size);
+
+        return cloneList;
     }
 }
