@@ -41,7 +41,16 @@ public class TestClone {
 
         System.out.println("original list reference : " + original);
         System.out.println("copy list reference : " + copy);
-        System.out.println("clone list reference : " + clone);
+        System.out.println("clone list reference : " + clone +"\n\n");
+
+        ArrayList<Integer> list = new ArrayList<>();
+
+        // get list to array (using toArray())
+        Object[] array1 = list.toArray();   //ArrayList에 있는 요소의 수만큼 정확하게 배열의 크기가 할당되어 반환됨
+
+        // get list to array (using toArray(T[] a)
+        Integer[] array2 = new Integer[10];  //객체 클래스로 상속관계에 있는 타입이거나 Wrapper(Integer -> int) 같이 데이터 타입을 유연하게 캐스팅할 여지가 있음
+        array2 = list.toArray(array2);
 
     }
 }
