@@ -1,6 +1,6 @@
 package ArrayList;
 
-import interface_form.ArrayList;
+import interface_form.ArrayList.ArrayList;
 
 public class TestClone {
     // clone(): 사용자가 사용하고 있던 ArrayList를 새로 하나 복제하고 싶을 때 쓰는 메소드
