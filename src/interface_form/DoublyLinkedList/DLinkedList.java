@@ -3,9 +3,11 @@ package interface_form.DoublyLinkedList;
 import interface_form.ArrayList.List;
 import interface_form.DoublyLinkedList.Node;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.NoSuchElementException;
 
-public class DLinkedList<E> implements List<E> {
+public class DLinkedList<E> implements List<E>,Cloneable {
     private Node<E> head;   //노드의 첫 부분
     private Node<E> tail;   //노드의 마지막 부분
     private int size;       //요소의 개수
@@ -296,4 +298,65 @@ public class DLinkedList<E> implements List<E> {
         }
     }
 
+    public Object clone() throws CloneNotSupportedException {
+
+        @SuppressWarnings("unchecked")
+        DLinkedList<? super E> clone = (DLinkedList<? super E>) super.clone();
+
+        clone.head = null;
+        clone.tail = null;
+        clone.size = 0;
+
+        for (Node<E> x = head; x != null; x = x.next) {
+            clone.addLast(x.data);
+        }
+
+        return clone;
+    }
+
+    public Object[] toArray() {
+        Object[] array = new Object[size];
+        int idx = 0;
+        for (Node<E> x = head; x != null; x = x.next) {
+            array[idx++] = (E) x.data;
+        }
+        return array;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T[] toArray(T[] a) {
+        if (a.length < size) {
+            // Arrya.newInstance(컴포넌트 타입, 생성할 크기)
+            a = (T[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
+        }
+        int i = 0;
+        Object[] result = a;
+        for (Node<E> x = head; x != null; x = x.next) {
+            result[i++] = x.data;
+        }
+        return a;
+    }
+
+    public void sort() {
+        /**
+         *  Comparator를 넘겨주지 않는 경우 해당 객체의 Comparable에 구현된
+         *  정렬 방식을 사용한다.
+         *  만약 구현되어있지 않으면 cannot be cast to class java.lang.Comparable
+         *  에러가 발생한다.
+         *  만약 구현되어있을 경우 null로 파라미터를 넘기면
+         *  Arrays.sort()가 객체의 compareTo 메소드에 정의된 방식대로 정렬한다.
+         */
+        sort(null);
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void sort(Comparator<? super E> c) {
+        Object[] a = this.toArray();
+        Arrays.sort(a, (Comparator) c);
+
+        int i = 0;
+        for (Node<E> x = head; x != null; x = x.next, i++) {
+            x.data = (E) a[i];
+        }
+    }
 }
