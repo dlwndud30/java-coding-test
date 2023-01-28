@@ -1,8 +1,6 @@
-package ArrayList;
+package LinkedList;
 
 import interface_form.DoublyLinkedList.DLinkedList;
-
-import java.util.Comparator;
 
 public class TestSort2 {
     public static void main(String[] args){

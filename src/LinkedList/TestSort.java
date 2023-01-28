@@ -1,4 +1,4 @@
-package ArrayList;
+package LinkedList;
 
 import interface_form.DoublyLinkedList.DLinkedList;
 
@@ -6,12 +6,12 @@ import java.util.Comparator;
 
 public class TestSort {
     public static void main(String[] args){
-        DLinkedList<Student2> list = new DLinkedList<>();
+        DLinkedList<Student> list = new DLinkedList<>();
 
-        list.add(new Student2("김자바", 92));
-        list.add(new Student2("이시플", 72));
-        list.add(new Student2("조시샵", 98));
-        list.add(new Student2("파이손", 51));
+        list.add(new Student("김자바", 92));
+        list.add(new Student("이시플", 72));
+        list.add(new Student("조시샵", 98));
+        list.add(new Student("파이손", 51));
 
 //        list.sort();  //class ArrayList.Student cannot be cast to class java.lang.Comparable
         list.sort(customComp);
@@ -20,9 +20,9 @@ public class TestSort {
             System.out.println(list.get(i));
         }
     }
-    static Comparator<Student2> customComp = new Comparator<Student2>() {
+    static Comparator<Student> customComp = new Comparator<Student>() {
         @Override
-        public int compare(Student2 o1, Student2 o2) {
+        public int compare(Student o1, Student o2) {
             return o2.score - o1.score;
         }
     };
