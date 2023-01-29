@@ -1,9 +1,10 @@
 package interface_form.Stack;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.EmptyStackException;
 
-public class Stack<E> implements StackInterface<E> {
+public class Stack<E> implements StackInterface<E>,Cloneable {
 
     private static final int DEFAULT_CAPACITY = 10;	// 최소(기본) 용적 크기
     private static final Object[] EMPTY_ARRAY = {};	// 빈 배열
@@ -122,5 +123,50 @@ public class Stack<E> implements StackInterface<E> {
     @Override
     public boolean empty() {
         return size == 0;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+
+        // 새로운 스택 객체 생성
+        Stack<?> cloneStack = (Stack<?>) super.clone();
+
+        // 새로운 스택의 배열도 생성해주어야 함(내부 객체는 깊은 복사가 되지 않기 때문)
+        cloneStack.array = new Object[size];
+
+        // 현재 배열을 새로운 스택의 배열에 값을 복사함
+        System.arraycopy(array, 0, cloneStack.array, 0, size);
+        return cloneStack;
+    }
+
+    public Object[] toArray() {
+        return Arrays.copyOf(array, size);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T[] toArray(T[] a) {
+        if (a.length < size)
+            return (T[]) Arrays.copyOf(array, size, a.getClass());
+
+        System.arraycopy(array, 0, a, 0, size);
+
+        return a;
+    }
+
+    public void sort() {
+        /**
+         *  Comparator를 넘겨주지 않는 경우 해당 객체의 Comparable에 구현된
+         *  정렬 방식을 사용한다.
+         *  만약 구현되어있지 않으면 cannot be cast to class java.lang.Comparable
+         *  에러가 발생한다.
+         *  만약 구현되어있을 경우 null로 파라미터를 넘기면
+         *  Arrays.sort()가 객체의 compareTo 메소드에 정의된 방식대로 정렬한다.
+         */
+        sort(null);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void sort(Comparator<? super E> c) {
+        Arrays.sort((E[]) array, 0, size, c);
     }
 }
