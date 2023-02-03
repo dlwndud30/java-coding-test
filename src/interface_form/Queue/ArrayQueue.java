@@ -1,5 +1,6 @@
 package interface_form.Queue;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public class ArrayQueue<E> implements Queue<E>{
@@ -138,5 +139,83 @@ public class ArrayQueue<E> implements Queue<E>{
         }
 
         front = rear = size = 0;
+    }
+
+    public Object[] toArray() {
+        return toArray(new Object[size]);
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public <T> T[] toArray(T[] a) {
+
+        final T[] res;
+        // 들어오는 배열의 길이가 큐의 요소 개수보다 작은경우
+        if(a.length < size) {
+            /*
+             * front가 rear보다 앞에 있을 경우 (또는 요소가 없을 경우 f==r)
+             *  ______________________
+             *  |  |  |  |  |  |  |  |
+             *  ˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉ
+             *    	f        r
+             */
+            if(front <= rear) {
+                return (T[]) Arrays.copyOfRange(array, front + 1, rear + 1, a.getClass());
+            }
+
+            /*
+             * front가 rear보다 뒤에 있을 경우
+             *  ______________________
+             *  |  |  |  |  |  |  |  |
+             *  ˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉ
+             *    	r        f
+             */
+
+            res = (T[]) Arrays.copyOfRange(array, 0, size, a.getClass());
+            int rearlength = array.length - 1 - front;	// 뒷 부분의 요소 개수
+
+            // 뒷 부분 복사
+            if(rearlength > 0) {
+                System.arraycopy(array, front + 1, res, 0, rearlength);
+            }
+            // 앞 부분 복사
+            System.arraycopy(array, 0, res, rearlength, rear + 1);
+
+            return res;
+        }
+
+
+        /*
+         * front가 rear보다 앞에 있을 경우 (또는 요소가 없을 경우 f==r)
+         *  ______________________
+         *  |  |  |  |  |  |  |  |
+         *  ˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉ
+         *    	f        r
+         */
+        if(front <= rear) {
+            System.arraycopy(array, front + 1, a, 0, size);
+        }
+
+
+        /*
+         * front가 rear보다 뒤에 있을 경우
+         *  ______________________
+         *  |  |  |  |  |  |  |  |
+         *  ˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉ
+         *    	r        f
+         */
+        else {
+
+            int rearlength = array.length - 1 - front;	// 뒷 부분의 요소 개수
+
+            // 뒷 부분 복사
+            if(rearlength > 0) {
+                System.arraycopy(array, front + 1, a, 0, rearlength);
+            }
+            // 앞 부분 복사
+            System.arraycopy(array, 0, a, rearlength, rear + 1);
+        }
+
+        return a;
     }
 }
