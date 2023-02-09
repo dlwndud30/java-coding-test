@@ -170,4 +170,34 @@ public class LinkedListDeque<E> implements Queue<E> {
         }
         return item;
     }
+
+    public int size(){
+        return size;
+    }
+
+    public boolean isEmpty(){
+        return size==0;
+    }
+
+    public boolean contains(Object value){
+        for(Node<E> x =head; x !=null; x=x.next){
+            if(value.equals(x.data)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void clear() {
+        for (Node<E> x = head; x != null;) {
+            Node<E> next = x.next;
+
+            x.data = null;
+            x.next = null;
+            x.prev = null;
+            x = next;
+        }
+        size = 0;
+        head = tail = null;
+    }
 }
