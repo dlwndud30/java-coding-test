@@ -1,6 +1,8 @@
 package interface_form.Heap;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.NoSuchElementException;
 
 public class Heap<E> {
     private final Comparator<? super E> comparator;
@@ -96,6 +98,64 @@ public class Heap<E> {
     }
 
     @SuppressWarnings("unchecked")
+    public E remove() {
+        if(array[1] == null){
+            throw new NoSuchElementException();
+        }
+        E result = (E) array[1];
+        E target = (E) array[size];
+        array[size] =null;
+
+        siftDown(1, target);
+
+        return result;
+    }
+
+    /**
+     * @param idx	삭제할 노드의 인덱스
+     * @param target	재배치 할 노드
+     */
+    private void siftDown(int idx, E target) {
+        if(comparator != null) {
+            siftDownComparator(idx, target, comparator);
+        }
+        else {
+            siftDownComparable(idx, target);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void siftDownComparator(int idx, E target, Comparator<? super E> comp){
+        array[idx]=null;
+        size--;
+
+        int parent = idx;
+        int child;
+
+        while ((child=getLeftChild(parent)) <= size){
+            int right = getRightChild(parent);
+            Object childVal = array[child];
+
+            if(right <= size && comp.compare((E)childVal, (E)array[right])>0){
+                child = right;
+                childVal = array[child];
+            }
+
+            if(comp.compare(target, (E) childVal) <=0){
+                break;
+            }
+
+            array[parent] = childVal;
+            parent=child;
+        }
+        array[parent]=target;
+
+        if(array.length > DEFAULT_CAPACITY && size < array.length / 4) {
+            resize(Math.max(DEFAULT_CAPACITY, array.length / 2));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
     private void siftUpComparator(int idx, E target, Comparator<? super E> comp) {
         while (idx>1){
             int parent = getParent(idx);
@@ -110,5 +170,55 @@ public class Heap<E> {
         }
 
         array[idx] = target;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void siftDownComparable(int idx, E target){
+        Comparable<? super E> comp = (Comparable<? super E>) target;
+
+        array[idx] = null;
+        size--;
+
+        int parent = idx;
+        int child;
+
+        while ((child=getLeftChild(parent)) <=size){
+            int right = getRightChild(parent);
+            Object childVal = array[child];
+            if (right <= size && ((Comparable<? super E>)childVal).compareTo((E)array[right])>0){
+                child=right;
+                childVal = array[child];
+            }
+            if(comp.compareTo((E)childVal) <=0){
+                break;
+            }
+            array[parent] = childVal;
+            parent=child;
+        }
+        array[parent]=comp;
+
+        if(array.length > DEFAULT_CAPACITY && size < array.length / 4) {
+            resize(Math.max(DEFAULT_CAPACITY, array.length / 2));
+        }
+    }
+
+    public int size() {
+        return this.size;
+    }
+
+    @SuppressWarnings("unchecked")
+    public E peek() {
+        if(array[1] == null) {
+            throw new NoSuchElementException();
+        }
+        return (E)array[1];
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public Object[] toArray() {
+        return Arrays.copyOf(array, size + 1);
     }
 }
