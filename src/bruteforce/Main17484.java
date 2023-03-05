@@ -3,7 +3,7 @@ package bruteforce;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.Stack;
 
 public class Main17484 {
     public static void main(String[] args) throws IOException {
@@ -21,54 +21,55 @@ public class Main17484 {
             }
         }
 
-        int min = N*100;
+        int result = Integer.MAX_VALUE;
 
         for(int i=0; i<M; i++){
-            int sum = map[0][i];
+            int x= i;
+            int y=0;
             int status = 1;
-            int x = i;
-            int y = 0;
-            System.out.println("-------------------------");
-            System.out.println("x = " + x + ", y = "+y);
-            while(y<N-1){
-                int[] mins = new int[3];
-                if(x-1>=0 && status != 0){
-                    mins[0]=map[y+1][x-1];
-                }
-                if(status != 1){
-                    mins[1]=map[y+1][x];
-                }
-                if(x+1<M && status != 2){
-                    mins[2]=map[y+1][x+1];
-                }
+            int fuel = map[y][x];
+            Node root = new Node(x,y,fuel,status);
 
-                int result = Integer.MAX_VALUE;
-                int index = 0;
-                for(int k=0; k<mins.length; k++){
-                    if(mins[k]>0 && result>mins[k]){
-                        result=mins[k];
-                        index=k;
+            Stack<Node> stack = new Stack<>();
+
+            stack.push(root);
+
+            while (!stack.isEmpty()){
+                Node parent = stack.pop();
+                if(parent.y>=N-1){
+                    result = Math.min(result, parent.fuel);
+                }else{
+                    int p_x = parent.x;
+                    int p_y = parent.y;
+
+                    if(p_x-1>=0 && parent.status !=0){
+                        Node child = new Node(p_x-1, p_y+1, parent.fuel+map[p_y+1][p_x-1], 0);
+                        stack.push(child);
+                    }
+                    if(parent.status !=1){
+                        Node child = new Node(p_x, p_y+1, parent.fuel+map[p_y+1][p_x], 1);
+                        stack.push(child);
+                    }
+                    if(p_x+1<M && parent.status !=2){
+                        Node child = new Node(p_x+1, p_y+1, parent.fuel+map[p_y+1][p_x+1], 2);
+                        stack.push(child);
                     }
                 }
-                sum+=result;
-                status=index;
-
-                System.out.println("mins = " + Arrays.toString(mins));
-                System.out.println("sum = " + sum+", index" +status);
-
-                if(status==0){
-                    x--;
-                } else if (status==2) {
-                    x++;
-                }
-                y++;
-            }
-
-            System.out.println("sum = " + sum);
-            if(sum<min){
-                min=sum;
             }
         }
-        System.out.println(min);
+        System.out.println(result);
+    }
+    static class Node{
+        int x;
+        int y;
+        int fuel;
+        int status;
+
+        public Node(int x, int y, int fuel, int status) {
+            this.x = x;
+            this.y = y;
+            this.fuel = fuel;
+            this.status = status;
+        }
     }
 }
