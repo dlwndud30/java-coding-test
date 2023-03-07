@@ -12,20 +12,19 @@ public class Main17484 {
         int N = Integer.parseInt(input[0]);
         int M = Integer.parseInt(input[1]);
 
-        int [][] map = new int[N][M];
-
-        for(int i=0; i<N; i++){
+        int [][] map = new int[N+1][M+1];
+        for(int i=1; i<=N; i++){
             String [] strings = br.readLine().split(" ");
-            for(int j=0; j<M; j++){
-                map[i][j] = Integer.parseInt(strings[j]);
+            for(int j=1; j<=M; j++){
+                map[i][j] = Integer.parseInt(strings[j-1]);
             }
         }
 
         int result = Integer.MAX_VALUE;
 
-        for(int i=0; i<M; i++){
+        for(int i=1; i<=M; i++){
             int x= i;
-            int y=0;
+            int y=1;
             int status = 1;
             int fuel = map[y][x];
             Node root = new Node(x,y,fuel,status);
@@ -36,7 +35,8 @@ public class Main17484 {
 
             while (!stack.isEmpty()){
                 Node parent = stack.pop();
-                if(parent.y>=N-1){
+
+                if(parent.y==N+1){
                     result = Math.min(result, parent.fuel);
                 }else{
                     int p_x = parent.x;
@@ -50,7 +50,7 @@ public class Main17484 {
                         Node child = new Node(p_x, p_y+1, parent.fuel+map[p_y+1][p_x], 1);
                         stack.push(child);
                     }
-                    if(p_x+1<M && parent.status !=2){
+                    if(p_x+1<=M && parent.status !=2){
                         Node child = new Node(p_x+1, p_y+1, parent.fuel+map[p_y+1][p_x+1], 2);
                         stack.push(child);
                     }
