@@ -23,6 +23,7 @@ public class Main17484 {
         int result = Integer.MAX_VALUE;
 
         for(int i=1; i<=M; i++){
+//            System.out.println("---------------" + i + "---------------");
             int x= i;
             int y=1;
             int status = 1;
@@ -35,14 +36,15 @@ public class Main17484 {
 
             while (!stack.isEmpty()){
                 Node parent = stack.pop();
-
-                if(parent.y==N+1){
+//                System.out.println(parent.x + " " + parent.y +  " " +parent.fuel + " " + parent.status);
+                if(parent.y==N){
                     result = Math.min(result, parent.fuel);
+//                    System.out.println("result ==== " + result);
                 }else{
                     int p_x = parent.x;
                     int p_y = parent.y;
 
-                    if(p_x-1>=0 && parent.status !=0){
+                    if(p_x-1>=1 && parent.status !=0){
                         Node child = new Node(p_x-1, p_y+1, parent.fuel+map[p_y+1][p_x-1], 0);
                         stack.push(child);
                     }
