@@ -33,6 +33,13 @@ public class Main2644_x {
             map[y][x] = 1;
         }
 
+        for (int i=1; i<=n; i++){
+            for (int j=1; j<=n; j++){
+                System.out.print(map[i][j] + " ");
+            }
+            System.out.println();
+        }
+
         dfs(a,0);
         System.out.println(visited[b]?result:-1);
     }
