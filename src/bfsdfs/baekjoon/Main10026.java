@@ -17,5 +17,6 @@ public class Main10026 {
                 map[i][j] = String.valueOf(string.charAt(j));
             }
         }
+
     }
 }
