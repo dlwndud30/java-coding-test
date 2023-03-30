@@ -26,7 +26,7 @@ public class Main10431 {
                     }
                 }
             }
-            bw.write(inputs[0] + " " + count+"\n");
+            bw.write(inputs[0]+" " + count+"\n");
         }
         br.close();
         bw.flush();
