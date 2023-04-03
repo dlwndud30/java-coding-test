@@ -23,7 +23,6 @@ public class Main9017 {
                     counts[index]++;
                     arr[index] += j+1;
                 }
-
             }
 
             int min = Integer.MIN_VALUE;
