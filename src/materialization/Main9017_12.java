@@ -2,6 +2,7 @@ package materialization;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main9017_12 {
     public static void main(String [] args)throws IOException {
@@ -63,6 +64,9 @@ public class Main9017_12 {
                     }
                 }
             }
+
+            System.out.println(Arrays.toString(scores));
+
             if(sameScore.size()>0){
                 min = Integer.MAX_VALUE;
                 min_idx = 0;
