@@ -16,5 +16,15 @@ public class Main11403 {
                 map[i][j]=Integer.parseInt(strings[j]);
             }
         }
+
+        for(int i=0; i<n; i++){
+            String [] strings = br.readLine().split(" ");
+            for(int j=0; j<n; j++){
+                map[i][j]=Integer.parseInt(strings[j]);
+            }
+        }
+    }
+    void dfs(int n){
+
     }
 }
