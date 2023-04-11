@@ -1,4 +1,4 @@
-package Example;
+package bfsdfs.baekjoon;
 
 import java.io.*;
 
